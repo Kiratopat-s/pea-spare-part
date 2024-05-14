@@ -1,0 +1,187 @@
+"use client";
+import MainStructure from "@/components/mainStructure";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
+function dashboard() {
+  const [selectedCNT, setselectedCNT] = useState<string[]>([
+    "cl0",
+    "cl1",
+    "cl2",
+    "cl3",
+    "cl4",
+    "cl5",
+    "cl6",
+    "cl7",
+    "cl8",
+    "cl9",
+    "cl10",
+    "cl11",
+    "cl12",
+  ]);
+  const [SPName, setSPName] = useState<string>("");
+  const [SPInitList, setSPInitList] = useState<any[]>([]);
+  useEffect(() => {
+    const promise = fetch("/api/sparepart/get-all")
+      .then((res) => res.json())
+      .then((data) => {
+        setSPInitList(data);
+      });
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+        const searchInput = document.getElementById("search-input");
+        if (searchInput) {
+          searchInput.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+  useEffect(() => {
+    toast.success(selectedCNT.join(", "));
+  }, [selectedCNT]);
+
+  function CLConvertToWord(clnumber: number) {
+    switch (clnumber) {
+      case 0:
+        return "สนญ.";
+      case 1:
+        return "กฟน.1";
+      case 2:
+        return "กฟน.2";
+      case 3:
+        return "กฟน.3";
+      case 4:
+        return "กฟฉ.1";
+      case 5:
+        return "กฟฉ.2";
+      case 6:
+        return "กฟฉ.3";
+      case 7:
+        return "กฟก.1";
+      case 8:
+        return "กฟก.2";
+      case 9:
+        return "กฟก.3";
+      case 10:
+        return "กฟต.1";
+      case 11:
+        return "กฟต.2";
+      case 12:
+        return "กฟต.3";
+    }
+  }
+
+  return (
+    <MainStructure>
+      <section className="w-full flex flex-col gap-4" id="cl-selector">
+        <div className="flex flex-row flex-wrap gap-4">
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((cnt) => (
+            <label
+              key={cnt}
+              className={`cursor-pointer label border-2 ${
+                selectedCNT.includes(`cl${cnt}`)
+                  ? `border-accent`
+                  : `border-neutral-content`
+              } rounded-xl px-2`}
+            >
+              <span className="label-text mr-2">{CLConvertToWord(cnt)}</span>
+              <input
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setselectedCNT([...selectedCNT, `cl${cnt}`]);
+                  } else {
+                    setselectedCNT(selectedCNT.filter((x) => x !== `cl${cnt}`));
+                  }
+                }}
+                checked={selectedCNT.includes(`cl${cnt}`)}
+                type="checkbox"
+                className="checkbox checkbox-accent"
+              />
+            </label>
+          ))}
+        </div>
+        <div className="flex flex-row flex-wrap gap-4">
+          <button
+            className="btn btn-outline btn-success"
+            onClick={() => {
+              setselectedCNT([
+                "cl0",
+                "cl1",
+                "cl2",
+                "cl3",
+                "cl4",
+                "cl5",
+                "cl6",
+                "cl7",
+                "cl8",
+                "cl9",
+                "cl10",
+                "cl11",
+                "cl12",
+              ]);
+            }}
+          >
+            <i className="text-xl fa-regular fa-circle-check"></i>Select all
+          </button>
+          <button
+            className="btn btn-outline btn-warning"
+            onClick={() => {
+              setselectedCNT([]);
+            }}
+          >
+            <i className="text-xl fa-regular fa-circle-xmark"></i>Unselect all
+          </button>
+        </div>
+      </section>
+      <section className="w-full flex flex-col gap-4" id="table-sparepart">
+        <label className="input input-bordered flex items-center gap-2">
+          <input
+            type="text"
+            className="grow"
+            id="search-input"
+            placeholder="Search sparepart by name"
+            onChange={(e) => {
+              setSPName(e.target.value);
+            }}
+          />
+          <kbd className="kbd kbd-sm">⌘</kbd>
+          <kbd className="kbd kbd-sm">K</kbd>
+        </label>
+        <div className="overflow-x-auto">
+          <table className="table">
+            {/* head */}
+            <thead className="text-white font-bold">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SPInitList.map((sp, index) => {
+                if (sp.name.includes(SPName)) {
+                  return (
+                    <tr key={index} className="hover">
+                      <th>{index + 1}</th>
+                      <td>{sp.name}</td>
+                      <td>{sp.description}</td>
+                    </tr>
+                  );
+                }
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </MainStructure>
+  );
+}
+
+export default dashboard;

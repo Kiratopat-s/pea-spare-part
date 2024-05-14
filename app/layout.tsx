@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import { SessionProvider } from "next-auth/react";
 import NAP from "@/components/NAP";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +21,15 @@ export default function RootLayout({
   return (
     <NAP>
       <html lang="en">
+        <head>
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          />
+        </head>
         <body className={inter.className}>
           <Navbar></Navbar>
+          <Toaster position="top-center" reverseOrder={false} />
           {children}
         </body>
       </html>

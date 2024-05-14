@@ -16,9 +16,117 @@ datasource db {
 model User {
     id            Int       @id @default(autoincrement())
     name          String?
+    role          String    @default("user")
+    position      String?
+    deptChange   String?
     email         String    @unique
     emailVerified DateTime?
     image         String?
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
+}
+
+model SparePart {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  image       String?
+  price       Float
+  createdAt   DateTime  @default(now())
+  // updatedAt   DateTime  @updatedAt
+  updatedAt   DateTime  @default(now())
+  cn0         Int
+  cn1         Int
+  cn2         Int
+  cn3         Int
+  cn4         Int
+  cn5         Int
+  cn6         Int
+  cn7         Int
+  cn8         Int
+  cn9         Int
+  cn10        Int
+  cn11        Int
+  cn12        Int
+}
+
+model PeaEmp {
+  emp_id              Int       @id
+  title_type          Int?
+  title_full_desc     String?
+  title_1             String?
+  title_2             String?
+  title_3             String?
+  title_4             String?
+  title_1_desc        String?
+  title_2_desc        String?
+  title_3_desc        String?
+  title_4_desc        String?
+  first_name          String?
+  last_name           String?
+  entry_date          String?
+  posi_status         Int?
+  posi_status_desc    String?
+  posi_date           String?
+  staff_date          String?
+  sex                 String?
+  sex_desc            String?
+  posi_code           Int?
+  posi_text_short     String?
+  posi_text           String?
+  level_code          String?
+  level_desc          String?
+  dept_change_code    String?
+  dept_short          String?
+  dept_full           String?
+  retired             String?
+  retired2_date       String?
+  blood_group         String?
+  emp_status          String?
+  emp_status_desc     String?
+  sap_update_date     String?
+  dept_sap            Int?
+  dept_sap_short      String?
+  dept_sap_full       String?
+  dept_upper          Int?
+  region              Int?
+  region_name         String?
+  sub_region          Int?
+  sub_region_name     String?
+  cost_center         String?
+  cost_center_name    String?
+  pea_code            String?
+  business_area       String?
+  business_area_name  String?
+  payroll_area        Int?
+  payroll_area_name   String?
+  vendor_code         String?
+  temp_emp_beg_date   String?
+  temp_emp_cont_date  String?
+  temp_emp_end_date   String?
+  resource_code       Int?
+  resource_name       String?
+  region2             String?
+  eng_name_short      String?
+  eng_name_full       String?
+  plans_code          Int?
+  plans_text_short    String?
+  plans_text_full     String?
+  stell_code          Int?
+  stell_text_short    String?
+  stell_text_full     String?
+  email               String?
+  tel_org_ext         String?
+  tel_org_long        String?
+  location_building   String?
+  location_floor      String?
+  imported_date       String?
+  updated_date        String?
+  updated_user        String?
+  accept_agreement    String?
+  tel_mobile          String?
+  tel_mobile_no       String?
+  dept_lev2           Int?
+  dept_lev3           Int?
+  seq                 Int?
 }

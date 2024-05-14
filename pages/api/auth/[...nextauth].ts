@@ -25,6 +25,9 @@ export const authOptions = {
                     where: {
                         email: user.email,
                     },
+                    select: {
+                        role: true, // Include the role field
+                    },
                 });
 
                 // If member doesn't exist, insert a new member
@@ -39,12 +42,20 @@ export const authOptions = {
                             updatedAt: new Date(),
                         },
                     });
+                    token.role = 'user';
+                }
+
+                if (member) {
+                    console.log(member)
+                    token.role = member.role;
                 }
             }
+
             return token;
         },
         async session({ session, token }: { session: any, token: any }) {
             session.id_token = token.id_token;
+            session.user.role = token.role;
             return session;
         },
     },
